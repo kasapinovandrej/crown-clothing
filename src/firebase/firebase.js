@@ -9,6 +9,28 @@ const config = {
     storageBucket: "crown-clothing-react2021.appspot.com",
     messagingSenderId: "603520170241",
     appId: "1:603520170241:web:728e7561e1341c24474300"
+};
+
+export const createUserProfileDocument = async (userAuth, aditionalData) => {
+    if (!userAuth) return;
+    const userRef = firestore.doc(`users/${userAuth.uid}`)
+    const snapShot = await userRef.get();
+
+    if (!snapShot.exists) {
+        const { displayName, email } = userAuth;
+        const createdAt = new Date()
+        try {
+            await userRef.set({
+                displayName,
+                email,
+                createdAt,
+                ...aditionalData
+            })
+        } catch (err) {
+            console.log("error creating user", err.message);
+        }
+    }
+    return userRef;
 }
 
 firebase.initializeApp(config)
