@@ -5,7 +5,6 @@ import { createSelector } from 'reselect';
 
 const selectCart = state => state.cart
 
-//posto koristim createSelector sada je ovo memoized selector
 export const selectCartItems = createSelector(
     [selectCart],
     cart => cart.cartItems
